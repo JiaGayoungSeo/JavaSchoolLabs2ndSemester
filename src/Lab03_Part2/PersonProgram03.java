@@ -2,6 +2,7 @@ package Lab03_Part2;
 
 import Lab02_Composition.Date;
 import Lab02_Composition.Person;
+import Lab03_ExceptionHandlingAndFileConnections.PersonFileHandler;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -17,12 +18,18 @@ public class PersonProgram03 {
 
     public static void main(String[] args){
 
-        getData();
+        getData("D:\\COMP233 JAVA\\IntelliJ\\PersonFile.txt");
         int choice = 0;
         while (choice !=5){
             choice = showMenu();
             executeChoice ( choice );
         }
+
+    }
+
+    public static void getData(String fileName){
+        PersonFileHandler pfh = new PersonFileHandler();
+        people = pfh.getData(fileName);
 
     }
 
@@ -35,6 +42,7 @@ public class PersonProgram03 {
         return choice;
     }
 
+    /*
     public static void getData(){
         people = new Person[5];
         people[0] = new Person("Smith", "John", 'T', new Date ( 11,22,1989 ));
@@ -44,6 +52,7 @@ public class PersonProgram03 {
         people[4] = new Person("Metuse", "Pat", 'F', new Date(01,14,1999));
 
     }
+    */
 
     public static int showMenu(){
         System.out.println ( " " );
@@ -86,6 +95,9 @@ public class PersonProgram03 {
             FileWriter fw = new FileWriter ( new File("PersonFile.txt") , false);
 
             String[] records = new String[people.length];
+            Integer length = people.length;
+                    fw.write(length.toString());
+                    fw.write(LINE_SEPARATOR);
             for(int i =0;i<records.length;i++){
                 records[i] = people[i].writeAsRecord();
             }

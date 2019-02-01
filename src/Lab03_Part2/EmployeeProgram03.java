@@ -4,40 +4,39 @@ import Lab02_Composition.Date;
 import Lab02_Composition.Person;
 import Lab04_Inheritance.Employee;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 
 public class EmployeeProgram03 {
     static Employee[] employees;
-    static Scanner input = new Scanner(System.in);
+    static Scanner input;
     private static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
 
     public static void main(String[] args){
 
-        getData("F:\\COMP233 JAVA\\IntelliJ\\EmployeeFile.txt");
+        getData("J:\\COMP233 JAVA\\IntelliJ\\EmployeeFile.txt");
         int choice = 0;
         while(choice!=6){
             choice = showOptions();
-            if(choice>6){
-                System.out.println("Enter valid data");
-            }
-            else {
-                executeOptions(choice);
-            }
+            executeOptions(choice);
         }
     }
 
     public static Employee[] getData(String filePath){
         try {
-            BufferedReader reader = new BufferedReader ( new FileReader ( "F:\\COMP233 JAVA\\IntelliJ\\EmployeeFile.txt" ) );
-            String data ="";
-            int index = 0;
-            while((data = reader.readLine ())!=null){
-                employees[index] = new Employee ( input.next (),input.next (),input.next ().charAt ( 0 ),new Date(input.nextInt (),input.nextInt (),input.nextInt ()),input.nextInt (), input.nextFloat (),new Date(input.nextInt (),input.nextInt (),input.nextInt ()));
-                index++ ;
+            input = new Scanner(new File(filePath));
+            int size = input.nextInt();
+            employees = new Employee[size];
+            int index =0;
+            while (input.hasNext()){
+                employees[index] = new Employee(input.next(),input.next(),input.next().charAt(0),new Date(input.nextInt(),input.nextInt(),input.nextInt()),input.nextInt(),input.nextFloat(),new Date(input.nextInt(),input.nextInt(),input.nextInt()));
+                System.out.println("Person added!");
+                index++;
             }
 
         }
@@ -55,11 +54,22 @@ public class EmployeeProgram03 {
         return employees;
     }
 
+    public static int getValid(int min, int max){
+        input = new Scanner(System.in);
+        int choice = input.nextInt();
+        while(choice<min || choice>max){
+            System.out.println ( "Please enter a valid number" );
+            choice = input.nextInt();
+        }
+        return choice;
+    }
+
     public static int showOptions(){
         System.out.println(" 1. Display all employees\n 2. Display info for employee by list number\n 3. Display info for employee by employee number\n 4. Edit info for employee by employee number\n 5. Add new employee\n 6. Exit");
         System.out.println("Choose a number");
+        int choice = getValid(1,6);
 
-        return input.nextInt();
+        return choice;
     }
 
 
@@ -228,7 +238,7 @@ public class EmployeeProgram03 {
         Date newHireDate = new Date(newHireMon, newHireDay, newHireYear);
         tempEmployee.setHireDate(newHireDate);
         tempEmployees[employees.length] = tempEmployee;
-        System.arraycopy(employees,0,tempEmployees,0,5);
+        System.arraycopy(employees,0,tempEmployees,0,employees.length);
         employees = tempEmployees;
         option1();
     }
@@ -243,9 +253,13 @@ public class EmployeeProgram03 {
             FileWriter fw = new FileWriter ( new File("EmployeeFile.txt") , false);
 
             String[] records = new String[employees.length];
+            Integer length = employees.length;
+            fw.write(length.toString());
+            fw.write(LINE_SEPARATOR);
             for(int i =0;i<records.length;i++){
                 records[i] = employees[i].writeAsRecord();
             }
+
 
             for(int i=0; i<records.length; i++){
                 fw.write(records[i]);

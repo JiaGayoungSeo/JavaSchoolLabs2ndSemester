@@ -228,9 +228,13 @@ public class EmployeeProgram {
             FileWriter fw = new FileWriter ( new File("EmployeeFile.txt") , false);
 
             String[] records = new String[employees.length];
+            Integer length = employees.length;
+            fw.write(length.toString());
+            fw.write(LINE_SEPARATOR);
             for(int i =0;i<records.length;i++){
                 records[i] = employees[i].writeAsRecord();
             }
+
 
             for(int i=0; i<records.length; i++){
                 fw.write(records[i]);
