@@ -19,7 +19,7 @@ public class EmployeeProgram03 {
 
     public static void main(String[] args){
 
-        getData("J:\\COMP233 JAVA\\IntelliJ\\EmployeeFile.txt");
+        getData("J:\\COMP233 JAVA\\IntelliJ\\233EmployeeTestData.txt");
         int choice = 0;
         while(choice!=6){
             choice = showOptions();
@@ -67,7 +67,7 @@ public class EmployeeProgram03 {
     public static int showOptions(){
         System.out.println(" 1. Display all employees\n 2. Display info for employee by list number\n 3. Display info for employee by employee number\n 4. Edit info for employee by employee number\n 5. Add new employee\n 6. Exit");
         System.out.println("Choose a number");
-        int choice = getValid(1,6);
+        int choice = getValid(1,employees.length+1);
 
         return choice;
     }
@@ -103,7 +103,7 @@ public class EmployeeProgram03 {
         System.out.println ( "Please choose a person" );
         option1();
         int choice = input.nextInt ();
-        if(choice>5){
+        if(choice>employees.length+1){
             System.out.println("Enter valid number");
             System.out.println(" ");
         }
@@ -228,7 +228,7 @@ public class EmployeeProgram03 {
         System.out.println("Enter new employee's salary");
         float newEmplWage = input.nextFloat();
         tempEmployee.setMonthlySalary(newEmplWage);
-        System.out.println("Enter new employee's hire date(Month/Dat/Year");
+        System.out.println("Enter new employee's hire date(Month/Dat/Year)");
         System.out.println("The month?");
         int newHireMon = input.nextInt();
         System.out.println("The day?");
@@ -250,7 +250,7 @@ public class EmployeeProgram03 {
 
     public static void saveAll(){
         try {
-            FileWriter fw = new FileWriter ( new File("EmployeeFile.txt") , false);
+            FileWriter fw = new FileWriter ( new File("233EmployeeTestData.txt") , false);
 
             String[] records = new String[employees.length];
             Integer length = employees.length;

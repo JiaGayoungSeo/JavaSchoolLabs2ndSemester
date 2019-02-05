@@ -18,7 +18,7 @@ public class PersonProgram03 {
 
     public static void main(String[] args){
 
-        getData("D:\\COMP233 JAVA\\IntelliJ\\PersonFile.txt");
+        getData("J:\\COMP233 JAVA\\IntelliJ\\src\\Lab03_Part2\\233PersonTestData.txt");
         int choice = 0;
         while (choice !=5){
             choice = showMenu();
@@ -62,7 +62,7 @@ public class PersonProgram03 {
         System.out.println("4. Add new information");
         System.out.println("5. Exit");
         System.out.println("Choice: ");
-        int choice= getValid ( 1,5 );
+        int choice= getValid ( 1,people.length+1 );
         return choice;
     }
 
@@ -140,7 +140,7 @@ public class PersonProgram03 {
     public static void menuOption2(){
         System.out.println ( "Please choose a person" );
         menuOption1 ();
-        int choice = getValid(1,5);
+        int choice = getValid(1,people.length+1);
 
         System.out.println ( people[choice-1].getFullName ()+" "+people[choice-1].getBirthDate () );
     }
@@ -148,12 +148,12 @@ public class PersonProgram03 {
     public static void menuOption3(){
         System.out.println("1.\tFirst Name \n2.\tLast Name \n3.\tMiddle Initial \n4.\tBirth Date \n5.\tCancel");
         System.out.println("Enter the number you want to edit");
-        int choice = getValid(1,5);
+        int choice = getValid(1,people.length+1);
         int index;
         switch (choice){
             case 1: menuOption1 ();
                     System.out.println("Who do you want to edit?");
-                    index = getValid(1,5);
+                    index = getValid(1,people.length+1);
                     System.out.println("Enter new first name");
                     String newFirstName = input.next (  );
                     people[index-1].setFirstName ( newFirstName );
@@ -163,7 +163,7 @@ public class PersonProgram03 {
 
             case 2: menuOption1 ();
                     System.out.println("Who do you want to edit?");
-                    index = getValid(1,5);
+                    index = getValid(1,people.length+1);
                     System.out.println("Enter new last name");
                     String newLastName = input.next (  );
                     people[index-1].setLastName ( newLastName );
@@ -173,7 +173,7 @@ public class PersonProgram03 {
 
             case 3: menuOption1 ();
                     System.out.println("Who do you want to edit?");
-                    index = getValid(1,5);
+                    index = getValid(1,people.length+1);
                     System.out.println("Enter new middle initial");
                     char newInitial = input.next().charAt ( 0 );
                     people[index-1].setMiddleInit ( newInitial );
@@ -184,7 +184,7 @@ public class PersonProgram03 {
 
             case 4: menuOption1 ();
                     System.out.println("Who do you want to edit?");
-                    index = getValid(1,5);
+                    index = getValid(1,people.length+1);
                     System.out.println("Enter the year");
                     int newYear = input.nextInt ();
                     System.out.println ( "Enter the month" );
