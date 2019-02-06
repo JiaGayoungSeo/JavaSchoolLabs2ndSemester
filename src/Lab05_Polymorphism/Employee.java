@@ -50,5 +50,5 @@ public abstract class Employee extends Person {
         return super.toString();
     }
 
-
+    public abstract float getEarnings();
 }

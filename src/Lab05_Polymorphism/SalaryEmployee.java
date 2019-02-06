@@ -16,4 +16,16 @@ public class SalaryEmployee extends Employee {
         super.setProjectNo(projectNo);
         this.monthlySalary = monthlySalary;
     }
+
+    public void setMonthlySalary(float monthlySalary) {
+        this.monthlySalary = monthlySalary;
+    }
+
+    public float getMonthlySalary() {
+        return monthlySalary;
+    }
+
+    public float getEarnings(){
+        return monthlySalary/2;
+    }
 }
