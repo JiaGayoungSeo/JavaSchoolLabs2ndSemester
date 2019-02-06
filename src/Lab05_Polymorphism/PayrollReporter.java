@@ -12,7 +12,16 @@ public class PayrollReporter {
     static Employee[] employees;
     static Scanner input;
 
+    public static void main(String[] args){
+        int choice = 0;
+        getData ();
 
+        while(choice!=7){
+            choice = showMenu ();
+            execute (choice);
+        }
+
+    }
     public static void getData(){
         employees = new Employee [10];
         employees[0] = new SalaryEmployee("John", "Smith", 'T', new Date (6,24,80), 100101, 1, 12, 2894.54f);
@@ -107,8 +116,6 @@ public class PayrollReporter {
         ArrayList<Integer> projectNo = new ArrayList<Integer> (array2);
         float[] wageCost = new float[projectNo.size ()];
 
-
-
         for(int i=0; i<projectNo.size ();i++){
             for(int j=0;j<employees.length;j++){
                 if (projectNo.get ( i ) == employees[j].getProjectNo ()) {
@@ -137,7 +144,7 @@ public class PayrollReporter {
                     wageCost[i] += employees[j].getEarnings ();
                 }
             }
-            System.out.println ( "Department#:  "+ depNo.get ( i )+ "  Total wages "+wageCost[i] );
+            System.out.println ( "Department#: "+ depNo.get ( i )+ "  Total wages "+wageCost[i] );
         }
     }
 
@@ -161,16 +168,7 @@ public class PayrollReporter {
 
     }
 
-    public static void main(String[] args){
-        int choice = 0;
-        getData ();
 
-        while(choice!=7){
-            choice = showMenu ();
-            execute (choice);
-        }
-
-    }
 
 }
 

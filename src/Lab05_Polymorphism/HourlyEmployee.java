@@ -38,13 +38,15 @@ public class HourlyEmployee extends Employee {
 
     public float getEarnings(){
         double earnings;
+
         float overTime =0;
+
         if(hoursWorked - 80>0){
             overTime = hoursWorked - 80;
         } else if( hoursWorked - 80 <= 0){
             overTime = 0;
         }
-        earnings = hourlyRate*hoursWorked+(hourlyRate*overTime*1.5);
+        earnings = hourlyRate*hoursWorked+(hourlyRate*overTime*0.5);
 
         return (float)earnings;
     }

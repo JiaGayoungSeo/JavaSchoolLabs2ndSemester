@@ -26,6 +26,6 @@ public class SalaryEmployee extends Employee {
     }
 
     public float getEarnings(){
-        return monthlySalary/2;
+        return monthlySalary*12/52*2;
     }
 }
