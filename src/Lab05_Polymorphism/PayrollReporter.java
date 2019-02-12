@@ -15,13 +15,12 @@ public class PayrollReporter {
     public static void main(String[] args){
         int choice = 0;
         getData ();
-
         while(choice!=7){
             choice = showMenu ();
             execute (choice);
         }
-
     }
+
     public static void getData(){
         employees = new Employee [10];
         employees[0] = new SalaryEmployee("John", "Smith", 'T', new Date (6,24,80), 100101, 1, 12, 2894.54f);
@@ -83,8 +82,8 @@ public class PayrollReporter {
 
         for(int i=0; i<employees.length;i++){
             if(employees[i].getProjectNo ()==projectNo){
-                System.out.print ( employees[i].getEmployeeNo () +"   "+ employees[i].getFullName () +"\t");
-                System.out.println ( employees[i].getEarnings () );
+                System.out.print ( employees[i].getEmployeeNo () +"   "+ employees[i].getFullName ());
+                System.out.println ( "\t\t"+employees[i].getEarnings () );
                 allEarnings += employees[i].getEarnings ();
             }
         }
@@ -124,7 +123,6 @@ public class PayrollReporter {
             }
             System.out.println ( "Project#: "+projectNo.get ( i )+" Total wages: "+ wageCost[i] );
         }
-
     }
 
     public static void option5(){
@@ -162,10 +160,8 @@ public class PayrollReporter {
                     System.out.println ( "\tOT Earnings: "+getOverTime (  ((HourlyEmployee)employees[i]).getHoursWorked () )*((HourlyEmployee)employees[i]).getHourlyRate ()*1.5);
 
                 } catch (ClassCastException e){
-
                 }
             }
-
     }
 
 
