@@ -2,16 +2,16 @@ package Lab06_Interface;
 import Lab02_Composition.Date;
 import Lab02_Composition.Person;
 
-public abstract class Employee_interface extends Person implements Comparable{
+public abstract class Employee02 extends Person implements Comparable<Employee02>{
     private int employeeNo;
     private int departmentNo;
     private Project project;
 
-    public Employee_interface(){
+    public Employee02(){
 
     }
 
-    public Employee_interface(String firstName, String lastName, Date birthDate, int employeeNo, int departmentNo, Project project){
+    public Employee02(String firstName, String lastName, Date birthDate, int employeeNo, int departmentNo, Project project){
         super.setFirstName(firstName);
         super.setLastName(lastName);
         super.setBirthDate(birthDate);
@@ -45,4 +45,16 @@ public abstract class Employee_interface extends Person implements Comparable{
     }
 
     public abstract float getEarnings();
+
+    @Override
+    public int compareTo(Employee02 o) {
+        Employee02 e = (Employee02) o;
+        if(o.getEmployeeNo ()>this.employeeNo){
+            return -1;
+        }
+        if(o.getEmployeeNo ()==this.employeeNo){
+            return 0;
+        }
+       else return 1;
+    }
 }

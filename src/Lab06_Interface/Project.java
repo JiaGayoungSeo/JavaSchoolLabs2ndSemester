@@ -33,6 +33,13 @@ public class Project implements Comparable{
 
     @Override
     public int compareTo(Object o) {
-        return 0;
+        Project project = (Project) o;
+        if( project.getProjectNo ()>this.projectNo){
+            return -1;
+        }
+        if(project.getProjectNo ()==this.projectNo){
+            return 0;
+        }
+        else return 1;
     }
 }

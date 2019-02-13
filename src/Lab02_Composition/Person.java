@@ -62,4 +62,6 @@ public class Person {
     public String writeAsRecord(){
         return this.firstName+" "+this.lastName+" "+this.getMiddleInit()+" "+this.birthDate.toString();
     }
+
+
 }
