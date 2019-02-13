@@ -4,6 +4,7 @@ import Lab02_Composition.Date;
 import Lab05_Polymorphism.HourlyEmployee;
 
 
+import javax.rmi.ssl.SslRMIClientSocketFactory;
 import java.lang.reflect.Array;
 import java.util.*;
 
@@ -17,6 +18,11 @@ public class PayrollReporterModified {
     public static void main(String[] args){
         int choice = 0;
         getProjectData ();
+
+        //for(int i=0;i<projects.length;i++){
+        //  System.out.println(projects[i].getProjectName());
+        //}
+
         getData ();
         while(choice!=7){
             choice = showMenu ();
@@ -30,6 +36,8 @@ public class PayrollReporterModified {
         projects[1] = new Project(0, "Unassigned");
         projects[2] = new Project(9, "Softco Salt Calculator");
         projects[3] = new Project ( 15, "OT Calculator" );
+
+        //Arrays.sort(projects);
     }
 
     public static void getData(){
@@ -78,9 +86,7 @@ public class PayrollReporterModified {
         Arrays.sort ( employees );
         for (int i =0; i< employees.length;i++){
             System.out.print ( employees[i].getEmployeeNo () +"   "+ employees[i].getFullName () +"\t");
-            System.out.print(" \t"+employees[i].getEarnings ());
-            System.out.println (  );
-
+            System.out.printf("\t%2g\n",employees[i].getEarnings());
         }
     }
 
@@ -93,8 +99,11 @@ public class PayrollReporterModified {
     public static void option2(){
         int projectNo = getNumber ();
         float allEarnings = 0;
+        System.out.println("Project name    Employee name    Earnings");
+        System.out.println("-----------------------------------------");
 
         for(int i=0; i<employees.length;i++){
+
             if(employees[i].getProject ().getProjectNo ()==projectNo){
                 System.out.print ( employees[i].getProject ().getProjectName () +"   "+ employees[i].getFullName ());
                 System.out.println ( "\t\t"+employees[i].getEarnings () );
@@ -130,6 +139,7 @@ public static void option4(){
         ArrayList<Integer> projectNo = new ArrayList<Integer> (array2);
 
         Collections.reverse ( projectNo );
+        Collections.sort ( projectNo );
 
         float[] wageCost = new float[projectNo.size ()];
 
@@ -184,6 +194,7 @@ public static void option4(){
                 }
             }
     }
+
 
 
 

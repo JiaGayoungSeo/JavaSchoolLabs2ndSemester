@@ -1,5 +1,7 @@
 package Lab06_Interface;
 
+import javax.naming.event.ObjectChangeListener;
+
 public class Project implements Comparable{
     private int projectNo;
     private String projectName;
@@ -30,7 +32,7 @@ public class Project implements Comparable{
     public String toString() {
         return super.toString();
     }
-
+    /* sort arrays by project number(int)
     @Override
     public int compareTo(Object o) {
         Project project = (Project) o;
@@ -41,5 +43,14 @@ public class Project implements Comparable{
             return 0;
         }
         else return 1;
+    }
+    */
+
+    //sort arrays by project name(String)
+    public int compareTo(Object o){
+        Project project = (Project)o;
+
+        return this.getProjectName().compareTo(project.getProjectName());
+
     }
 }
