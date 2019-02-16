@@ -32,6 +32,7 @@ public class Project implements Comparable{
     public String toString() {
         return super.toString();
     }
+
     /* sort arrays by project number(int)
     @Override
     public int compareTo(Object o) {

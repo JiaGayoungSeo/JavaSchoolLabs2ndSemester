@@ -149,11 +149,8 @@ public static void option4(){
                     wageCost[i] += employees[j].getEarnings ();
                 }
             }
-
             System.out.println ( "Project#: "+projectNo.get ( i )+" Total wages: "+ wageCost[i] );
         }
-
-
     }
 
     public static void option5(){

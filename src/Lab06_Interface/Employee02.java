@@ -2,7 +2,7 @@ package Lab06_Interface;
 import Lab02_Composition.Date;
 import Lab02_Composition.Person;
 
-public abstract class Employee02 extends Person implements Comparable<Employee02>{
+public abstract class Employee02 extends Person implements Comparable{
     private int employeeNo;
     private int departmentNo;
     private Project project;
@@ -47,12 +47,12 @@ public abstract class Employee02 extends Person implements Comparable<Employee02
     public abstract float getEarnings();
 
     @Override
-    public int compareTo(Employee02 o) {
+    public int compareTo(Object o) {
         Employee02 e = (Employee02) o;
-        if(o.getEmployeeNo ()>this.employeeNo){
+        if(e.getEmployeeNo()>this.employeeNo){
             return -1;
         }
-        if(o.getEmployeeNo ()==this.employeeNo){
+        if(e.getEmployeeNo ()==this.employeeNo){
             return 0;
         }
        else return 1;
