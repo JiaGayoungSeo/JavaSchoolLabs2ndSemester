@@ -2,7 +2,7 @@ package MidTermExamination;
 
 import Lab02_Composition.Date;
 
-public abstract class PartTimeStudent extends Student{
+public class PartTimeStudent extends Student{
     private int numberOfCourses;
 
     public PartTimeStudent(){}

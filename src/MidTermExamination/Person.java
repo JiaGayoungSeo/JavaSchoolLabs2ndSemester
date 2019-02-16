@@ -55,9 +55,6 @@ public class Person {
     }
 
     public void setGender(char gender){
-        if(gender!= 'M'|| gender!='F'){
-            this.gender ='U';
-        }
         this.gender = gender;
     }
 
