@@ -56,4 +56,5 @@ public abstract class Student extends Person{
         if(this.getTuition ()==student.getTuition ()) return 0;
         else return 1;
     }
+
 }
