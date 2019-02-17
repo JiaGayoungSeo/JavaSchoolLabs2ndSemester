@@ -49,4 +49,11 @@ public abstract class Student extends Person{
     }
 
     public abstract float getTuition();
+
+    public int compareTo(Object o){
+        Student student = (Student)o;
+        if(this.getTuition ()>student.getTuition ()) return -1;
+        if(this.getTuition ()==student.getTuition ()) return 0;
+        else return 1;
+    }
 }

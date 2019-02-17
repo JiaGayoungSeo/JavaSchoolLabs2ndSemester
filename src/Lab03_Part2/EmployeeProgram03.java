@@ -14,12 +14,13 @@ import java.util.Scanner;
 public class EmployeeProgram03 {
     static Employee[] employees;
     static Scanner input;
+
     private static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
 
     public static void main(String[] args){
 
-        getData("J:\\COMP233 JAVA\\IntelliJ\\233EmployeeTestData.txt");
+        getData("233EmployeeTestData.txt");
         int choice = 0;
         while(choice!=6){
             choice = showOptions();

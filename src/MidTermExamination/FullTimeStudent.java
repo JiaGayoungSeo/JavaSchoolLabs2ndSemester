@@ -2,7 +2,7 @@ package MidTermExamination;
 
 import Lab02_Composition.Date;
 
-public class FullTimeStudent extends Student{
+public class FullTimeStudent extends Student implements Comparable{
     private boolean insuranceOptOut;
     private boolean studentCentreOptOut;
 
