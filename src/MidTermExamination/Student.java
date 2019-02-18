@@ -52,9 +52,13 @@ public abstract class Student extends Person{
 
     public int compareTo(Object o){
         Student student = (Student)o;
-        if(this.getTuition ()>student.getTuition ()) return -1;
+        if(this.getTuition ()<student.getTuition ()) return -1;
         if(this.getTuition ()==student.getTuition ()) return 0;
         else return 1;
+    }
+
+    public String studentAsRecord(){
+        return this.studentNumber+" "+this.email+" "+this.registrationDate.toString ()+" ";
     }
 
 }

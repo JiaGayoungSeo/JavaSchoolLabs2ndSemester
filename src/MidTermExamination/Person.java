@@ -70,6 +70,6 @@ public class Person {
     }
 
     public String writeAsRecord(){
-        return this.firstName+" "+this.lastName+" "+this.getMiddleInit()+" "+this.birthDate.toString();
+        return this.lastName+" "+this.firstName+" "+this.getMiddleInit()+" "+this.birthDate.toString()+" "+this.gender+" ";
     }
 }

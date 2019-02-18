@@ -44,4 +44,8 @@ public class FullTimeStudent extends Student implements Comparable{
         else  return tuition;
     }
 
+    public String writeBooleanAsRecord(){
+        return this.insuranceOptOut + " "+ this.studentCentreOptOut;
+    }
+
 }

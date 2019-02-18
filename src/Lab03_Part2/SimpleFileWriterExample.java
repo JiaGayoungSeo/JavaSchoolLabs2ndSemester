@@ -13,7 +13,7 @@ public class SimpleFileWriterExample {
         double temp = 27.3d;
         FileWriter fw = null;
         try{
-            fw = new FileWriter(new File("233PersonTestData.txt"));
+            fw = new FileWriter(new File("2PersonTestData.txt"));
             fw.write(LINE_SEPARATOR);
             fw.write(String.format("I am %d years old." ,age));
             fw.write(LINE_SEPARATOR);

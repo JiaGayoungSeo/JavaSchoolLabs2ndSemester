@@ -5,6 +5,7 @@ import Lab04_Inheritance.Employee;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -18,7 +19,7 @@ public class RegisterProgram {
 
     public static void main(String[] args) throws Exception{
         int choice = 0;
-        getStudents ("F:\\COMP233 JAVA\\IntelliJ\\TestFile.txt"  );
+        getStudents ("F:\\COMP233 JAVA\\IntelliJ\\examTestData.txt"  );
         while(choice!=6){
             choice = showMenu ();
             execute ( choice );
@@ -31,7 +32,7 @@ public class RegisterProgram {
             input = new Scanner(new File (filePath));
             int size = input.nextInt();
             students = new Student[size];
-            int index =0;
+            int index = 0;
             while (input.hasNext ()){
                 if(students[index]==null){
                     if(input.next ().charAt ( 0 )=='P'){
@@ -57,9 +58,11 @@ public class RegisterProgram {
             System.out.println("Error reading error");
         }
 
-        catch (Exception e){
-            System.out.println("An unknown error has occurred");
+        catch (FileNotFoundException fnfe){
+            System.out.println("Files not found");
         }
+
+
         return students;
     }
 
@@ -76,6 +79,7 @@ public class RegisterProgram {
         int choice = input.nextInt ();
         while(choice<min || choice>max){
             System.out.println ( "Please enter a valid number" );
+            System.out.print(">>");
             choice = input.nextInt ();
         }
         return choice;
@@ -135,8 +139,10 @@ public class RegisterProgram {
         System.out.println ( "Enter the student number" );
         int studentNo = getValidChoice ( 0,999999 );
         for(int i =0; i<students.length;i++){
-            if(students[i] instanceof PartTimeStudent){
-                students[i] = newFullTimeStudent ( (PartTimeStudent) students[i] );
+            if(students[i].getStudentNumber ()==studentNo){
+                if(students[i] instanceof PartTimeStudent){
+                    students[i] = newFullTimeStudent ( (PartTimeStudent) students[i] );
+                }
             }
         }
     }
@@ -149,14 +155,19 @@ public class RegisterProgram {
     static void menu5(){
 
             try {
-                FileWriter fw = new FileWriter ( new File("StudentsFile.txt") , false);
+
+                FileWriter fw = new FileWriter ( new File("newFile.txt") , false);
 
                 String[] records = new String[students.length];
                 Integer length = students.length;
                 fw.write(length.toString());
                 fw.write(LINE_SEPARATOR);
-                for(int i =0;i<records.length;i++){
-                    records[i] = students[i].writeAsRecord();
+                for(int i =0;i<students.length;i++){
+                    if(students[i] instanceof FullTimeStudent){
+                        records[i] = 'F'+" "+students[i].writeAsRecord()+students[i].studentAsRecord ()+((FullTimeStudent)students[i]).writeBooleanAsRecord ();
+                    } else {
+                        records[i] = 'P'+" "+students[i].writeAsRecord()+students[i].studentAsRecord ()+((PartTimeStudent)students[i]).getNumberOfCourses ();
+                    }
                 }
 
                 for(int i=0; i<records.length; i++){
@@ -183,24 +194,24 @@ public class RegisterProgram {
                 System.out.println("An unknown error has occurred");
             }
 
-            getStudents ( "StudentFile.txt" );
+            getStudents ( "newFile.txt" );
 
     }
 
     static int showMenu(){
-        int choice = getValidChoice ( 1,6 );
-
+        System.out.println ( "------------------------------------------------------------------" );
         System.out.println ( "1.\tDisplay name and tuition fee for all students in sorted order " );
         System.out.println ( "2.\tDisplay students by year " );
         System.out.println ( "3.\tDisplay Student Centre Member Mail List" );
         System.out.println ( "4.\tPart Time to Full Time Transfer" );
         System.out.println ( "5.\tReload Data" );
         System.out.println ( "6.\tExit the program " );
-        return choice;
+        System.out.println ( "------------------------------------------------------------------" );
+        System.out.print(">>");
+        return  getValidChoice ( 1,6 );
     }
 
     static void execute(int choice){
-        choice = showMenu ();
         switch (choice){
             case 1 : menu1 (); break;
             case 2: menu2 ( subMenu2 () ); break;
