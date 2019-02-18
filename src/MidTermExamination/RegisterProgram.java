@@ -19,12 +19,12 @@ public class RegisterProgram {
 
     public static void main(String[] args) throws Exception{
         int choice = 0;
-        getStudents ("F:\\COMP233 JAVA\\IntelliJ\\examTestData.txt"  );
+        getStudents ("D:\\COMP233 JAVA\\IntelliJ\\examTestData.txt"  );
+        //System.out.println(students[0].getStudentNumber());
         while(choice!=6){
             choice = showMenu ();
             execute ( choice );
         }
-
     }
 
     public static  Student[] getStudents(String filePath){
@@ -61,8 +61,6 @@ public class RegisterProgram {
         catch (FileNotFoundException fnfe){
             System.out.println("Files not found");
         }
-
-
         return students;
     }
 
@@ -70,10 +68,18 @@ public class RegisterProgram {
         Arrays.sort ( students );
         for(int i=0; i<students.length;i++){
             System.out.print (students[i].getFullName ()+"\t");
-            System.out.println ( students[i].getTuition () );
+            System.out.println ( students[i].getTuition ());
         }
     }
-
+/* method to check if a student is full time student.
+    static void checkFullTimeStudent(Student[] students){
+        for(int i=0;i<students.length;i++){
+            if(students[i] instanceof FullTimeStudent){
+                System.out.println(students[i].getStudentNumber()+students[i].getFullName());
+            }
+        }
+    }
+*/
     static int getValidChoice(int min, int max){
         input = new Scanner ( System.in);
         int choice = input.nextInt ();
@@ -86,7 +92,6 @@ public class RegisterProgram {
     }
 
     static int subMenu2(){
-        //input = new Scanner ( System.in);
         System.out.println ( "\n1. Junior \n2. Intermediate \n3. Senior" );
         int choice = getValidChoice ( 1,3 );
         return choice;
@@ -135,7 +140,6 @@ public class RegisterProgram {
     }
 
     static void menu4(){
-        //input = new Scanner ( System.in );
         System.out.println ( "Enter the student number" );
         int studentNo = getValidChoice ( 0,999999 );
         for(int i =0; i<students.length;i++){
@@ -149,13 +153,12 @@ public class RegisterProgram {
 
     static FullTimeStudent newFullTimeStudent(PartTimeStudent ptstudent){
         FullTimeStudent newStudent = new FullTimeStudent (ptstudent.getLastName (),ptstudent.getFirstName (),ptstudent.getMiddleInit (),new Date(ptstudent.getBirthDate ().getMonth (),ptstudent.getBirthDate ().getDay (),ptstudent.getBirthDate ().getYear ()), ptstudent.getGender (),ptstudent.getStudentNumber (),ptstudent.getEmail (), new Date(ptstudent.getRegistrationDate ().getMonth (),ptstudent.getRegistrationDate ().getDay (),ptstudent.getRegistrationDate ().getYear ()),false,true);
+        System.out.println("Transfered to Full time student!");
         return newStudent;
     }
 
     static void menu5(){
-
             try {
-
                 FileWriter fw = new FileWriter ( new File("newFile.txt") , false);
 
                 String[] records = new String[students.length];
@@ -193,9 +196,7 @@ public class RegisterProgram {
             catch (Exception e){
                 System.out.println("An unknown error has occurred");
             }
-
             getStudents ( "newFile.txt" );
-
     }
 
     static int showMenu(){
@@ -206,6 +207,7 @@ public class RegisterProgram {
         System.out.println ( "4.\tPart Time to Full Time Transfer" );
         System.out.println ( "5.\tReload Data" );
         System.out.println ( "6.\tExit the program " );
+        //System.out.println("7. \tCheck full time student");
         System.out.println ( "------------------------------------------------------------------" );
         System.out.print(">>");
         return  getValidChoice ( 1,6 );
@@ -219,6 +221,7 @@ public class RegisterProgram {
             case 4: menu4 (); break;
             case 5: menu5 (); break;
             case 6: System.exit ( 0 ); break;
+            //case 7: checkFullTimeStudent(students);
         }
     }
 }
