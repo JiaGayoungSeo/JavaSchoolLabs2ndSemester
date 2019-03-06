@@ -1,7 +1,7 @@
 package MidTermExamination;
 import Lab02_Composition.Date;
 
-public abstract class Student extends Person{
+public abstract class Student extends Person implements Comparable{
     private int studentNumber;
     private String email;
     private Date registrationDate;

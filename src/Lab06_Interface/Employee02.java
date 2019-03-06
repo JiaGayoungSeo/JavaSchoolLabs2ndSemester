@@ -44,6 +44,8 @@ public abstract class Employee02 extends Person implements Comparable{
         return super.toString();
     }
 
+    //abstract: 상속을 강제하는 일종의 규제
+    //abstract method: empty method where the signature is defined.
     public abstract float getEarnings();
 
     @Override

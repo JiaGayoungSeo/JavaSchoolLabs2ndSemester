@@ -9,13 +9,11 @@ public class Person {
     private char middleInit;
     private String birthDate;
 
-
-
     public Person(String lastName, String firstName, char middleInit, String birthDate ){
-        this.lastName = lastName;
-        this.firstName = firstName;
-        this.middleInit = middleInit;
-        this.birthDate = birthDate;
+        setLastName ( lastName );
+        setFirstName ( firstName );
+        setMiddleInit ( middleInit );
+        setBirthDate ( birthDate );
     }
 
     public String getLastName(){

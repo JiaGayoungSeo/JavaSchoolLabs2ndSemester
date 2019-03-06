@@ -17,14 +17,15 @@ public class RegisterProgram {
     private static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args){
         int choice = 0;
-        getStudents ("D:\\COMP233 JAVA\\IntelliJ\\examTestData.txt"  );
+        getStudents ("F:\\COMP233 JAVA\\IntelliJ\\examTestData.txt"  );
         //System.out.println(students[0].getStudentNumber());
         while(choice!=6){
             choice = showMenu ();
             execute ( choice );
         }
+
     }
 
     public static  Student[] getStudents(String filePath){

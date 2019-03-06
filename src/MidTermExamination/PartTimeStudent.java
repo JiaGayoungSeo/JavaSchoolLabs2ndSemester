@@ -2,7 +2,7 @@ package MidTermExamination;
 
 import Lab02_Composition.Date;
 
-public class PartTimeStudent extends Student implements Comparable{
+public class PartTimeStudent extends Student{
     private int numberOfCourses;
 
     public PartTimeStudent(){}
