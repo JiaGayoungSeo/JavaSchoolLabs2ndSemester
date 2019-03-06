@@ -23,17 +23,10 @@ public class Lab07_SQLAccess {
         //String sql = getSqlStatement(displayMenu());
 
        // executeSQL(strPassword,sql);
-        //menu4();
         menu5();
+
     }
 
-
-    static String getSqlStatement(int option){
-        if(option==1) return menu1();
-        if(option==2) return menu2();
-        if(option==4) return menu4(subMenu());
-        else return "";
-    }
 
     static int displayMenu(){
         input = new Scanner(System.in);
@@ -47,6 +40,17 @@ public class Lab07_SQLAccess {
         System.out.println ( "------------------------------------------------------------------" );
         System.out.print(">>");
         return input.nextInt();
+    }
+    static void execute(int choice){
+        choice = displayMenu();
+        switch (choice){
+            case 1: displaySQL(menu1());
+            case 2: displaySQL(menu2());
+            case 3: menu3();
+            case 4: menu4();
+            case 5: menu5();
+            case 6: System.exit(0);
+        }
     }
 
     static String menu1(){
@@ -111,13 +115,13 @@ public class Lab07_SQLAccess {
                     if(editNum==1){
                         System.out.println("Input a new job description");
                         String newDescription = input.next();
-                        String Sql ="Update job set description = '"+newDescription+"' where jobcode = "+jobCode[i]+"";
+                        String Sql ="Update job set description = '"+newDescription+"' where jobcode = "+jobCode[i-1]+"";
                         stmt.executeUpdate(Sql);
                     }
                     else if(editNum == 2){
                         System.out.println("Input a new job payrate");
                         float newPayRate = input.nextFloat();
-                        String Sql ="Update job set payrate = "+newPayRate+" where jobcode = "+jobCode[i]+"";
+                        String Sql ="Update job set payrate = "+newPayRate+" where jobcode = "+jobCode[i-1]+"";
                         stmt.executeUpdate(Sql);
 
                     }
@@ -142,6 +146,7 @@ public class Lab07_SQLAccess {
     }
 
     static void menu5(){
+        displaySQL("Select employee.EmplID, employee.firstname, employee.lastname, employee.jobcode, Job.DESCRIPTION from Employee Inner JOIN Job on employee.Jobcode = Job.Jobcode order by EmplID");
         input = new Scanner(System.in);
         System.out.println("Enter a number you want to edit on the list");
         int index = input.nextInt();
@@ -189,10 +194,10 @@ public class Lab07_SQLAccess {
 
                     }
                     else if(editNum==3){
-                        executeSQL("SELECT JobCode, Description, Payrate, Payclass from Job");
-                        System.out.println("Choose the number of the job you want to change to");
-                        int newJob = input.nextInt();
-                        String Sql ="Update Employee set Jobcode = "+newJob*1000+" where emplID = "+emplID[i-1]+"";
+                        displaySQL("SELECT JobCode, Description, Payrate, Payclass from Job");
+                        System.out.println("Choose the number of the job code you want to change to");
+                        int newJobCode = input.nextInt();
+                        String Sql ="Update Employee set Jobcode = "+newJobCode+" where emplID = "+emplID[i-1]+"";
                         stmt.executeUpdate(Sql);
                     }
                 }
@@ -355,7 +360,7 @@ public class Lab07_SQLAccess {
         return strPassword;
     }
 
-    static void executeSQL(String sql){
+    static void displaySQL(String sql){
         Statement stmt = null;
         ResultSet rset = null;
         ResultSetMetaData rsmd = null;
