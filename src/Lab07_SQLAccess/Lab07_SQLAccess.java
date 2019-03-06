@@ -19,17 +19,18 @@ public class Lab07_SQLAccess {
      */
 
     public static void main(String[] args) {
-        strPassword = getPassword();
-        String sql = getSqlStatement(displayMenu());
+        //strPassword = getPassword();
+        //String sql = getSqlStatement(displayMenu());
 
-        executeSQL(strPassword,sql);
+       // executeSQL(strPassword,sql);
+        //menu4();
+        menu5();
     }
 
 
     static String getSqlStatement(int option){
         if(option==1) return menu1();
         if(option==2) return menu2();
-        if(option==3) return menu3();
         if(option==4) return menu4(subMenu());
         else return "";
     }
@@ -56,23 +57,206 @@ public class Lab07_SQLAccess {
         return "Select e.emplID, e.firstname, e.lastname, j.description from Employee e inner join Job j ON e.Jobcode = j.Jobcode ";
     }
 
-    static String menu3(){
+    static void menu3(){
         input = new Scanner(System.in);
         System.out.println("Enter the job code");
-        String jobCode= input.next()+",";
+        int jobCode= input.nextInt();
         System.out.println("Enter the job description");
-        String jobDes = input.next()+",";
+        String jobDes = "'"+input.next()+"',";
         System.out.println("Enter its pay rate");
-        String payRate = input.next()+",";
+        float payRate = input.nextFloat();
         System.out.println("1.Salary 2.Hourly");
         String payClass;
         if(input.nextInt()==1){
-            payClass = "Salary";
-        }else payClass = "Hourly";
+            payClass = "'"+"Salary"+"'";
+        }else payClass = "'"+"Hourly"+"'";
 
-        String statement = "Insert Into Job Values"+"("+jobCode+",'"+jobDes+"',"+payRate+", '"+payClass+"')";
-        return statement;
+        String statement = "Insert Into Job Values"+"("+jobCode+","+jobDes+payRate+","+payClass+")";
+        executeUpdate(statement);
     }
+
+    static void menu4(){
+        input = new Scanner(System.in);
+        System.out.println("Enter a number you want to edit on the list");
+        int index = input.nextInt();
+        Statement stmt = null;
+        ResultSet rset = null;
+        ResultSetMetaData rsmd = null;
+        Connection conn  = null;
+
+        try{
+            DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+            conn = DriverManager.getConnection ("jdbc:oracle:thin:@bisoracle.siast.sk.ca:1521:ACAD","CISTU030","bekind");
+
+            stmt = conn.createStatement();
+
+            String SQLQuery = "Select Count(*) from Job";
+            rset = stmt.executeQuery(SQLQuery);
+            rset.next();
+            int size = rset.getInt(1);
+            int[] jobCode = new int[size];
+            rset = stmt.executeQuery("Select Jobcode from Job order by Jobcode");
+            rsmd = rset.getMetaData();
+
+            int recordNum =0;
+            while(rset.next()){
+                jobCode[recordNum] = Integer.valueOf(rset.getString("jobcode"));
+                recordNum++;
+            }
+
+            for(int i=0; i<jobCode.length;i++){
+                if(index==i){
+                    System.out.println("\n1. Description \n2. Payrate");
+                    int editNum = input.nextInt();
+                    if(editNum==1){
+                        System.out.println("Input a new job description");
+                        String newDescription = input.next();
+                        String Sql ="Update job set description = '"+newDescription+"' where jobcode = "+jobCode[i]+"";
+                        stmt.executeUpdate(Sql);
+                    }
+                    else if(editNum == 2){
+                        System.out.println("Input a new job payrate");
+                        float newPayRate = input.nextFloat();
+                        String Sql ="Update job set payrate = "+newPayRate+" where jobcode = "+jobCode[i]+"";
+                        stmt.executeUpdate(Sql);
+
+                    }
+                }
+            }
+
+        }catch(SQLException sqle){
+            sqle.printStackTrace();
+        }catch(Exception e){
+            System.out.println("Unknown error has occurred.");
+            System.out.println("Exception!"); e.printStackTrace();
+        }finally{
+            try{
+                rset.close();
+                stmt.close();
+                conn.close();
+            }catch (Exception e){
+                System.out.println("Warning.");
+                System.out.println("Failed to free up system resources");
+            }
+        }
+    }
+
+    static void menu5(){
+        input = new Scanner(System.in);
+        System.out.println("Enter a number you want to edit on the list");
+        int index = input.nextInt();
+        Statement stmt = null;
+        ResultSet rset = null;
+        ResultSetMetaData rsmd = null;
+        Connection conn  = null;
+
+        try{
+            DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+            conn = DriverManager.getConnection ("jdbc:oracle:thin:@bisoracle.siast.sk.ca:1521:ACAD","CISTU030","bekind");
+
+            stmt = conn.createStatement();
+
+            String SQLQuery = "Select Count(*) from Employee";
+            rset = stmt.executeQuery(SQLQuery);
+            rset.next();
+            int size = rset.getInt(1);
+            int[] emplID = new int[size];
+            rset = stmt.executeQuery("Select EmplID from Employee order by EmplID");
+            rsmd = rset.getMetaData();
+
+            int recordNum =0;
+
+            while(rset.next()){
+                emplID[recordNum] = Integer.valueOf(rset.getString("emplID"));
+                recordNum++;
+            }
+
+            for(int i=0; i<emplID.length;i++){
+                if(index==i){
+                    System.out.println("\n1. First name \n2. Last name \n3. Job description");
+                    int editNum = input.nextInt();
+                    if(editNum==1){
+                        System.out.println("Input a new first name");
+                        String newFirstName = input.next();
+                        String Sql ="Update Employee set Firstname = '"+newFirstName+"' where emplID = "+emplID[i-1]+"";
+                        stmt.executeUpdate(Sql);
+                    }
+                    else if(editNum == 2){
+                        System.out.println("Input a new last name");
+                        String newLastName = input.next();
+                        String Sql ="Update Employee set Lastname = "+newLastName+" where emplID = "+emplID[i-1]+"";
+                        stmt.executeUpdate(Sql);
+
+                    }
+                    else if(editNum==3){
+                        executeSQL("SELECT JobCode, Description, Payrate, Payclass from Job");
+                        System.out.println("Choose the number of the job you want to change to");
+                        int newJob = input.nextInt();
+                        String Sql ="Update Employee set Jobcode = "+newJob*1000+" where emplID = "+emplID[i-1]+"";
+                        stmt.executeUpdate(Sql);
+                    }
+                }
+            }
+
+        }catch(SQLException sqle){
+            sqle.printStackTrace();
+        }catch(Exception e){
+            System.out.println("Unknown error has occurred.");
+            System.out.println("Exception!"); e.printStackTrace();
+        }finally{
+            try{
+                rset.close();
+                stmt.close();
+                conn.close();
+            }catch (Exception e){
+                System.out.println("Warning.");
+                System.out.println("Failed to free up system resources");
+            }
+        }
+    }
+/*
+    static void displayJobTable(){
+        Statement stmt = null;
+        ResultSet rset = null;
+        ResultSetMetaData rsmd = null;
+        Connection conn  = null;
+
+        try{
+            DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+            conn = DriverManager.getConnection ("jdbc:oracle:thin:@bisoracle.siast.sk.ca:1521:ACAD","CISTU030","bekind");
+
+            stmt = conn.createStatement();
+            rset = stmt.executeQuery("SELECT JobCode, Description, Payrate, Payclass from Job");
+            rsmd  = rset.getMetaData();
+
+            int columnCount = rsmd.getColumnCount();
+            int recordNum =1;
+            while(rset.next()){
+                System.out.print(recordNum);
+                recordNum++;
+                for(int i=0;i<columnCount;i++){
+                    System.out.print(" "+rset.getString(i+1));
+                }
+                System.out.println("\n------------------------------------------");
+            }
+        }catch(SQLException sqle){
+            sqle.printStackTrace();
+        }catch(Exception e){
+            System.out.println("Unknown error has occurred.");
+            System.out.println("Exception!" + e);
+        }finally{
+            try{
+                rset.close();
+                stmt.close();
+                conn.close();
+            }catch (Exception e){
+                System.out.println("Warning.");
+                System.out.println("Failed to free up system resources");
+            }
+        }
+
+    }
+*/
 
     static int getValidChoice(int min, int max){
         input = new Scanner ( System.in);
@@ -152,7 +336,7 @@ public class Lab07_SQLAccess {
         return sql;
     }
 */
-    public static String getPassword() {
+     static String getPassword() {
         JPanel panel = new JPanel();
         JLabel label = new JLabel("Enter a password:");
         JPasswordField pass = new JPasswordField(10);
@@ -171,7 +355,48 @@ public class Lab07_SQLAccess {
         return strPassword;
     }
 
-    public static void executeSQL(String password, String sql){
+    static void executeSQL(String sql){
+        Statement stmt = null;
+        ResultSet rset = null;
+        ResultSetMetaData rsmd = null;
+        Connection conn  = null;
+
+        try{
+            DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+            conn = DriverManager.getConnection ("jdbc:oracle:thin:@bisoracle.siast.sk.ca:1521:ACAD","CISTU030","bekind");
+
+            stmt = conn.createStatement();
+            rset = stmt.executeQuery(sql);
+            rsmd  = rset.getMetaData();
+
+            int columnCount = rsmd.getColumnCount();
+            int recordNum =1;
+            while(rset.next()){
+                System.out.print(recordNum);
+                recordNum++;
+                for(int i=0;i<columnCount;i++){
+                    System.out.print(" "+rset.getString(i+1));
+                }
+                System.out.println("\n------------------------------------------");
+            }
+        }catch(SQLException sqle){
+            sqle.printStackTrace();
+        }catch(Exception e){
+            System.out.println("Unknown error has occurred.");
+            System.out.println("Exception!" + e);
+        }finally{
+            try{
+                rset.close();
+                stmt.close();
+                conn.close();
+            }catch (Exception e){
+                System.out.println("Warning.");
+                System.out.println("Failed to free up system resources");
+            }
+        }
+
+    }
+     static void executeSQL(String password, String sql){
         Statement stmt = null;
         ResultSet rset = null;
         ResultSetMetaData rsmd = null;
@@ -210,5 +435,37 @@ public class Lab07_SQLAccess {
                 System.out.println("Failed to free up system resources");
             }
         }
+    }
+
+    static void executeUpdate(String sql){
+        Statement stmt = null;
+
+        Connection conn  = null;
+        try{
+            //register driver
+            DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+            //get connection
+            conn = DriverManager.getConnection ("jdbc:oracle:thin:@bisoracle.siast.sk.ca:1521:ACAD","CISTU030","bekind");
+            //get statement
+            stmt = conn.createStatement();
+            //create sql statement
+            String statement = sql;
+            int cnt = stmt.executeUpdate(sql);
+
+        }catch(SQLException sqle){
+            sqle.printStackTrace();
+        }catch(Exception e){
+            System.out.println("Unknown error has occurred.");
+            System.out.println("Exception!" + e);
+        }finally{
+            try{
+                stmt.close();
+                conn.close();
+            }catch (Exception e){
+                System.out.println("Warning.");
+                System.out.println("Failed to free up system resources");
+            }
+        }
+
     }
 }
