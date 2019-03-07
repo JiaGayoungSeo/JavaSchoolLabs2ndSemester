@@ -1,27 +1,60 @@
 package Lab07_Part2;
 
 import java.sql.*;
+import java.util.Date;
 import java.util.Scanner;
 
 public class Lab07_JDBCandSQL {
 
     public static void main(String[] args){
-        delete("Job","Jobcode");
+       displayEmployee();
+       update("Employee","Firstname");
+       //delete("Job","Jobcode");
     }
 
-    static void delete(String table, String index){
+    static void insertEmployee(){
         Scanner input = new Scanner(System.in);
         Connection conn = null;
         PreparedStatement pstmt = null;
-        String query = "DELETE from"+table+"Where"+index+"=?";
+        String query = "Insert into Employee(EMPLID,SIN,LastName,FirstName,Street,City,Province,PostalCode,JobCode,IncomeTax,BirthDate,HireDate,JobCodeDate) Values ?,?,?,?,?,?,?,?,?,?,?,?,?";
         try{
             conn = DBConnection.getConnection();
             pstmt = conn.prepareStatement(query); //create an object
-            System.out.println("Enter the "+index+" you want to delete");
-            int num = input.nextInt();
-            pstmt.setInt(1,num);
+            System.out.println("Enter a new emplID");
+            int emplID = input.nextInt();
+            pstmt.setInt(1,emplID);
+            System.out.println("SIN Number");
+            int Sin = input.nextInt();
+            pstmt.setInt(2, Sin);
+            System.out.println("Lastname");
+            String lastName = input.next();
+            System.out.println("Firstname");
+            String firstName = input.next();
+            System.out.println("Street(address)");
+            String street = input.next();
+            System.out.println("City");
+            String city = input.next();
+            System.out.println("Province");
+            String prov = input.next();
+            System.out.println("Postal code");
+            String postal = input.next();
+            System.out.println("Job code");
+            int jobCode = input.nextInt();
+            System.out.println("Income tax(Y/N)");
+            char incomeTax = input.next().charAt(0);
+            System.out.println("Birth date");
+            System.out.println("Hire date");
+
+
+
+
+
+
+
+
+
             int result = pstmt.executeUpdate();
-            System.out.println("column deleted");
+            System.out.println(result+ "column deleted");
 
         }catch (Exception e){
             e.printStackTrace();
@@ -34,12 +67,41 @@ public class Lab07_JDBCandSQL {
             }
         }
     }
+
+    static void delete(String table, String index){
+        Scanner input = new Scanner(System.in);
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        String query = "DELETE from "+table+ " Where "+index+" =?";
+        System.out.println(query);
+        try{
+            conn = DBConnection.getConnection();
+            pstmt = conn.prepareStatement(query); //create an object
+            System.out.println("Enter the "+index+" you want to delete");
+
+            int num = input.nextInt();
+            pstmt.setInt(1,num);
+            int result = pstmt.executeUpdate();
+            System.out.println(result+ "column deleted");
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            try {
+                pstmt.close();
+                conn.close();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
     static void update(String table, String column){
         Scanner input = new Scanner(System.in);
         Connection conn = null;
         PreparedStatement pstmt = null;
-        String query = "UPDATE"+table+"Set"+column+"=?"+"Where"+column+"=?";
-
+        String query = "UPDATE "+table+" Set "+column+" =? "+" Where "+column+" =?";
+        System.out.println(query);
         try{
             conn = DBConnection.getConnection();
             pstmt = conn.prepareStatement(query); //create an object
