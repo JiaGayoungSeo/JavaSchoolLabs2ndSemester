@@ -103,14 +103,13 @@ public class Lab07_SQLAccess {
             int[] jobCode = new int[size];
             rset = stmt.executeQuery("Select Jobcode from Job order by Jobcode");
 
-
             int recordNum =0;
             while(rset.next()){
                 jobCode[recordNum] = Integer.valueOf(rset.getString("jobcode"));
                 recordNum++;
             }
 
-            for(int i=0; i<jobCode.length;i++){
+            for(int i=0; i<jobCode.length+1;i++){
                 if(index==i){
                     System.out.println("\n1. Description \n2. Payrate");
                     int editNum = input.nextInt();
