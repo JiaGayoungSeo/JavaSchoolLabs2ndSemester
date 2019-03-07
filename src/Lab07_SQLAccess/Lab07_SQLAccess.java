@@ -20,10 +20,12 @@ public class Lab07_SQLAccess {
 
     public static void main(String[] args) {
         //strPassword = getPassword();
-        //String sql = getSqlStatement(displayMenu());
-
        // executeSQL(strPassword,sql);
-        menu5();
+        int choice =0;
+        while(choice!=6){
+            choice = displayMenu();
+            execute(choice);
+        }
 
     }
 
@@ -42,13 +44,12 @@ public class Lab07_SQLAccess {
         return input.nextInt();
     }
     static void execute(int choice){
-        choice = displayMenu();
         switch (choice){
-            case 1: displaySQL(menu1());
-            case 2: displaySQL(menu2());
-            case 3: menu3();
-            case 4: menu4();
-            case 5: menu5();
+            case 1: displaySQL(menu1());break;
+            case 2: displaySQL(menu2());break;
+            case 3: menu3();break;
+            case 4: menu4();break;
+            case 5: menu5();break;
             case 6: System.exit(0);
         }
     }
@@ -58,7 +59,7 @@ public class Lab07_SQLAccess {
     }
 
     static String menu2(){
-        return "Select e.emplID, e.firstname, e.lastname, j.description from Employee e inner join Job j ON e.Jobcode = j.Jobcode ";
+        return "Select e.emplID, e.firstname, e.lastname, j.description from Employee e inner join Job j ON e.Jobcode = j.Jobcode order by emplID";
     }
 
     static void menu3(){
@@ -80,12 +81,13 @@ public class Lab07_SQLAccess {
     }
 
     static void menu4(){
+        displaySQL("Select JobCode, description, payrate, payclass from job ");
         input = new Scanner(System.in);
         System.out.println("Enter a number you want to edit on the list");
         int index = input.nextInt();
         Statement stmt = null;
         ResultSet rset = null;
-        ResultSetMetaData rsmd = null;
+
         Connection conn  = null;
 
         try{
@@ -100,7 +102,7 @@ public class Lab07_SQLAccess {
             int size = rset.getInt(1);
             int[] jobCode = new int[size];
             rset = stmt.executeQuery("Select Jobcode from Job order by Jobcode");
-            rsmd = rset.getMetaData();
+
 
             int recordNum =0;
             while(rset.next()){
@@ -176,7 +178,7 @@ public class Lab07_SQLAccess {
                 recordNum++;
             }
 
-            for(int i=0; i<emplID.length;i++){
+            for(int i=0; i<emplID.length+1;i++){
                 if(index==i){
                     System.out.println("\n1. First name \n2. Last name \n3. Job description");
                     int editNum = input.nextInt();
@@ -189,9 +191,8 @@ public class Lab07_SQLAccess {
                     else if(editNum == 2){
                         System.out.println("Input a new last name");
                         String newLastName = input.next();
-                        String Sql ="Update Employee set Lastname = "+newLastName+" where emplID = "+emplID[i-1]+"";
+                        String Sql ="Update Employee set Lastname = '"+newLastName+"' where emplID = "+emplID[i-1]+"";
                         stmt.executeUpdate(Sql);
-
                     }
                     else if(editNum==3){
                         displaySQL("SELECT JobCode, Description, Payrate, Payclass from Job");
@@ -219,128 +220,7 @@ public class Lab07_SQLAccess {
             }
         }
     }
-/*
-    static void displayJobTable(){
-        Statement stmt = null;
-        ResultSet rset = null;
-        ResultSetMetaData rsmd = null;
-        Connection conn  = null;
 
-        try{
-            DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-            conn = DriverManager.getConnection ("jdbc:oracle:thin:@bisoracle.siast.sk.ca:1521:ACAD","CISTU030","bekind");
-
-            stmt = conn.createStatement();
-            rset = stmt.executeQuery("SELECT JobCode, Description, Payrate, Payclass from Job");
-            rsmd  = rset.getMetaData();
-
-            int columnCount = rsmd.getColumnCount();
-            int recordNum =1;
-            while(rset.next()){
-                System.out.print(recordNum);
-                recordNum++;
-                for(int i=0;i<columnCount;i++){
-                    System.out.print(" "+rset.getString(i+1));
-                }
-                System.out.println("\n------------------------------------------");
-            }
-        }catch(SQLException sqle){
-            sqle.printStackTrace();
-        }catch(Exception e){
-            System.out.println("Unknown error has occurred.");
-            System.out.println("Exception!" + e);
-        }finally{
-            try{
-                rset.close();
-                stmt.close();
-                conn.close();
-            }catch (Exception e){
-                System.out.println("Warning.");
-                System.out.println("Failed to free up system resources");
-            }
-        }
-
-    }
-*/
-
-    static int getValidChoice(int min, int max){
-        input = new Scanner ( System.in);
-        int choice = input.nextInt ();
-        while(choice<min || choice>max){
-            System.out.println ( "Please enter a valid number" );
-            System.out.print(">>");
-            choice = input.nextInt ();
-        }
-        return choice;
-    }
-
-    static int subMenu(){
-        System.out.println ( "\n1. Description \n2. Payrate" );
-        int choice = getValidChoice ( 1,2 );
-        return choice;
-    }
-
-
-    static String menu4(int submenu){
-        if(submenu==1){
-            return editDescription();
-        }
-        else return editPayrate();
-    }
-
-    static String editDescription(){
-        input = new Scanner(System.in);
-        System.out.println("1000\tManager	    \t5440	\tSalary");
-        System.out.println("2000\tCashier    	\t11.63	\tHourly");
-        System.out.println("3000\tStockperson	\t8.89	\tHourly");
-        System.out.println("4000\tBaker	      \t18.91	\tHourly");
-        System.out.println("5000\tButcher	    \t19.26	\tHourly");
-        System.out.println("6000\tCleaner	    \t6.75	\tHourly");
-        System.out.println("7000\tPharmacist	\t28.17	\tHourly");
-        System.out.println("8000\tAssistant	  \t12.58	\tHourly");
-
-        System.out.println("Input the number on the list");
-        int listNo = input.nextInt() *1000;
-        String jobCode = Integer.toString(listNo);
-
-        System.out.println("Input a new description");
-        String newDescription = input.next();
-
-        String statement = "Update Job Set Description = "+newDescription+"Where Jobcode ="+jobCode;
-        return statement;
-    }
-
-    static String editPayrate(){
-        input = new Scanner(System.in);
-        System.out.println("1000\tManager	    \t5440	\tSalary");
-        System.out.println("2000\tCashier    	\t11.63	\tHourly");
-        System.out.println("3000\tStockperson	\t8.89	\tHourly");
-        System.out.println("4000\tBaker	      \t18.91	\tHourly");
-        System.out.println("5000\tButcher	    \t19.26	\tHourly");
-        System.out.println("6000\tCleaner	    \t6.75	\tHourly");
-        System.out.println("7000\tPharmacist	\t28.17	\tHourly");
-        System.out.println("8000\tAssistant	  \t12.58	\tHourly");
-
-        System.out.println("Input the number on the list");
-        int listNo = input.nextInt() *1000;
-        String jobCode = Integer.toString(listNo);
-
-        System.out.println("Input a new payrate");
-        String newPayRate = input.next();
-        String statement = "Update Job Set Payrate = "+newPayRate+"Where Jobcode ="+jobCode;
-        return statement;
-    }
-
-/*
-    public static String getSqlStatement(){
-        input = new Scanner(System.in);
-        System.out.println("Employee Number:  ");
-
-        String empNo = input.next();
-        String sql = "Select * from employee where EmplID =" + empNo;
-        return sql;
-    }
-*/
      static String getPassword() {
         JPanel panel = new JPanel();
         JLabel label = new JLabel("Enter a password:");
@@ -377,7 +257,7 @@ public class Lab07_SQLAccess {
             int columnCount = rsmd.getColumnCount();
             int recordNum =1;
             while(rset.next()){
-                System.out.print(recordNum);
+                System.out.print(recordNum+".");
                 recordNum++;
                 for(int i=0;i<columnCount;i++){
                     System.out.print(" "+rset.getString(i+1));
@@ -421,7 +301,7 @@ public class Lab07_SQLAccess {
                 System.out.print(recordNum);
                 recordNum++;
                 for(int i=0;i<columnCount;i++){
-                    System.out.print(" "+rset.getString(i+1));
+                    System.out.print(". "+rset.getString(i+1));
                 }
                 System.out.println("\n------------------------------------------");
             }
@@ -454,8 +334,7 @@ public class Lab07_SQLAccess {
             //get statement
             stmt = conn.createStatement();
             //create sql statement
-            String statement = sql;
-            int cnt = stmt.executeUpdate(sql);
+            stmt.executeUpdate(sql);
 
         }catch(SQLException sqle){
             sqle.printStackTrace();
