@@ -4,6 +4,8 @@
       <root url="jar://$PROJECT_DIR$/../classes12.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../classes12.jar!/" />
+    </SOURCES>
   </library>
 </component>

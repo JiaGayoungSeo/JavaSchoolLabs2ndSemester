@@ -26,9 +26,7 @@ public class Lab07_SQLAccess {
             choice = displayMenu();
             execute(choice);
         }
-
     }
-
 
     static int displayMenu(){
         input = new Scanner(System.in);
@@ -64,6 +62,7 @@ public class Lab07_SQLAccess {
 
     static void menu3(){
         input = new Scanner(System.in);
+        displaySQL(menu1());
         System.out.println("Enter the job code");
         int jobCode= input.nextInt();
         System.out.println("Enter the job description");
