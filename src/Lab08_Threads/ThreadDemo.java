@@ -8,7 +8,7 @@ public class ThreadDemo{
         ARunnable test2 = new ARunnable ( "Thread2" );
         ARunnable test3 = new ARunnable ( "Thread3" );
 
-        ExecutorService runThreads = Executors.newFixedThreadPool ( 2 );
+        ExecutorService runThreads = Executors.newFixedThreadPool ( 3);
         runThreads.execute ( test1 );
         runThreads.execute ( test2 );
         runThreads.execute ( test3 );

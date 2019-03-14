@@ -1,6 +1,17 @@
 package Lab08_Threads;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class Track {
+
+    Horse h1 = new Horse("Sea Biscuit");
+    Horse h2 = new Horse("Man o War");
+
+    ExecutorService race = Executors.newFixedThreadPool(2);
+    
+
 }
 
 class Horse implements Runnable{
