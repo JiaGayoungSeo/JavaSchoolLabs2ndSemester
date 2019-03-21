@@ -28,7 +28,7 @@ public class ClientDemo2 {
 
         try{
             System.out.println ( InetAddress.getLocalHost ().getHostAddress () );
-            String serverIp = "172.16.1.92";
+            String serverIp = "127.0.0.1";
 
             //서버 연결 소켓
             socket = new Socket ( serverIp,port );
