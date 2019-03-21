@@ -53,19 +53,19 @@ public class ClientDemo2 {
                     pw.println (message);
                     //버퍼 비워주기
                     pw.flush ();
-                    if(message.equals ( "Out" )){
+                    if(message.equals ( "OVER" )){
                         break;
                     }
 
                     //서버가 보낸 메세지 확인
                     String receiveMessage = br.readLine ();
-                    if(!receiveMessage.equals ( "Over" )&&!receiveMessage.equals ( "Out" )){
+                    if(!receiveMessage.equals ( "OVER" )&&!receiveMessage.equals ( "OUT" )){
                         System.out.println ( receiveMessage );
                     }
-                    if(receiveMessage.equals ( "Over" )){
+                    if(receiveMessage.equals ( "OVER" )){
                         continue;
                     }
-                    if(receiveMessage.equals ( "Out" )){
+                    if(receiveMessage.equals ( "OVER" )){
                         System.out.println ( "The connection is lost" );
                     }
                 }

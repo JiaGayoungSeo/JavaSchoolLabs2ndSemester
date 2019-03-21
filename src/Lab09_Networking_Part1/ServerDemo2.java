@@ -42,7 +42,7 @@ public class ServerDemo2 {
 
                 Scanner sc = new Scanner ( System.in );
 
-                if(!message.equals ( "Over" )&&!message.equals ( "Out" )){
+                if(!message.equals ( "OVER" )&&!message.equals ( "OUT" )){
                     System.out.println ( client.getInetAddress ()+" Says "+message );
 
                     String response = sc.nextLine ();
@@ -50,22 +50,19 @@ public class ServerDemo2 {
                     //버퍼 비워주기
                     pw.flush ();
                 }
-                else if(message.equals ( "Over" )){
+                else if(message.equals ( "OVER" )){
 
-                    System.out.println ( "Send the client Over or Out" );
+                    System.out.println ( "Send the client OVER or OVER" );
                     String newMessage = sc.nextLine ();
 
-
-                    if(newMessage.equals ( "Over" )){
-                        continue;
-                    }
-                    if(newMessage.equals ( "Out" )){
+                    if(newMessage.equals ( "OUT" )){
                         System.out.println ( "It terminates and the connection is lost" );
                         System.exit ( 0 );
                     }
                     pw.println (newMessage);
 
                 }
+
                 if(message.equals ( "Out" )){
                     break;
                 }
