@@ -37,34 +37,36 @@ public class ClientDemo3 {
             PrintWriter pw = new PrintWriter(new OutputStreamWriter(out));
 
 
-
             // 4. 키보드로부터 한 줄씩 입력받는 BufferedReader 객체 생성
 
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
 
 
-
-            String line = null;
-
+            String line = "";
             // 5. 키보드로부터 한 줄을 입력받음
+            try {
+                while(!line.equals ( "OVER" )){
+                    line = keyboard.readLine ();
 
-            while((line = keyboard.readLine ())!=null){
+                    if(line.equals("OUT")) break;
 
-                if(line.equals("quit")) break;
+                    // 6. PrintWriter에 있는 println() 메소드를 이용해 서버에게 전송
 
-                // 6. PrintWriter에 있는 println() 메소드를 이용해 서버에게 전송
+                    pw.println(line);
 
-                pw.println(line);
+                    pw.flush();
 
-                pw.flush();
-
+                }
 
 
                 String serverMessage = br.readLine ();
-                System.out.println (serverMessage);
+                while(serverMessage!=null){
+                    System.out.println (serverMessage);
 
+                }
 
-
+            } catch (NullPointerException npe){
+                npe.printStackTrace ();
             }
 
 

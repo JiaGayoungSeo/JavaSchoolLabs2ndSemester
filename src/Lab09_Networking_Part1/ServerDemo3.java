@@ -56,7 +56,7 @@ public class ServerDemo3 {
 
 
 
-            String clientMessage = null;
+            String clientMessage;
 
             //5. BufferedReader의 readLine() 메소드를 이용해
 
@@ -67,12 +67,11 @@ public class ServerDemo3 {
                 System.out.println("클라이언트로부터 전송받은 문자열 : "+clientMessage);
 
 
-
                 // 6. PrintWriter의 println을 이용해 다시 클라이언트로 전송
 
-                String serverMessage = keyboard.readLine ();
+                //String serverMessage = keyboard.readLine ();
 
-                pw.println(serverMessage);
+                pw.println(clientMessage);
 
                 pw.flush();
 
@@ -80,6 +79,13 @@ public class ServerDemo3 {
                     break;
                 }
 
+            }
+
+            String serverMessage = null;
+
+            while((serverMessage = keyboard.readLine ())!=null){
+                pw.println ( serverMessage );
+                pw.flush ();
             }
 
             // 6. IO 객체와 소켓의 close() 메소드 호출
