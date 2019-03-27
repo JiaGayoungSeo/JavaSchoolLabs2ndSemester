@@ -27,6 +27,7 @@ public class ServerDemo5 {
         try {
             messageOut = "";
             server = new ServerSocket(12345, 100);
+
             while (!messageOut.equals("OUT")) {
                 System.out.println("Waiting for the client to connect...");
                 connection = server.accept();

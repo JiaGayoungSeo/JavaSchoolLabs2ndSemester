@@ -14,7 +14,7 @@ public class ClientDemo3 {
 
             // 1. 서버의 IP와 서버의 동작 포트 값(10001)을 인자로 넣어 socket 생성
 
-            Socket sock = new Socket("127.0.0.1", 10001);
+            Socket sock = new Socket("10.52.32.13", 10001);
 
             BufferedReader keyboard =
 
