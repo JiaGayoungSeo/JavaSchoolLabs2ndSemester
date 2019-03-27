@@ -10,64 +10,66 @@ import java.util.Scanner;
 //One shot server. It will listen for an incoming message, respond, and then shut down.
 public class Server {
 
-    static String messageIn; // hold the incoming message
-    static String messageOut; // hold the outgoing message
-    static Scanner keyboardInput;
+    static String messageIn ="";
+    static String messageOut ="";
 
-    // creates what is called a "handshake point" for other programs(on other computers) to connect to this one
-    static ServerSocket server;
+    public Server(){
+        int port = 12345;
 
-    static Socket connection;
-
-    static ObjectOutputStream outputStream; //out to client
-    static ObjectInputStream inputStream; //in from client
-
-
-    public static void main(String[] args){
-        try{
-
-            //open socket
-            server = new ServerSocket ( 77,100 );
-            //wait for client to connect
-            System.out.println ( "Waiting for client to connect...." );
-            connection = server.accept ();
-            System.out.println ( "Client Connected !" );
-
-            /*
-1.	The client will continue to send until either the string <OVER> or <OUT> is sent.
-2.	The server will continue to receive until either the string <OVER> or <OUT> is received
-3.	When the client sends the string <OVER> it will then continue to receive until it Receives <OVER> or <OUT> from the server.
-4.	When the server receives <OVER> it will continue to send until <OVER> or <OUT> is sent.
-5.	If the server sends <OVER> return to step 1
-6.	If the server sends <OUT> it terminates and the connection is lost
-7.	If the client sends <OUT> terminate the client.  The server should still be running and awaiting more connections.
- */
-
-
-            outputStream = new ObjectOutputStream ( connection.getOutputStream () );
-            outputStream.flush ();
-
-            inputStream = new ObjectInputStream ( connection.getInputStream () );
-
+        try {
             while(true){
-                messageIn = (String)inputStream.readObject ();
-                System.out.println ( "Client says: "+messageIn );
-                System.out.println ( "Response! " );
-                keyboardInput = new Scanner ( System.in );
-                messageOut = keyboardInput.nextLine ();
-                outputStream.writeObject ( messageOut );
-                outputStream.flush ();
+                ServerSocket server = new ServerSocket ( port );
+                System.out.println ( "Waiting for client to connect...." );
+                //server 소켓으로 들어오는 클라이언트 소켓을 받음
+                Socket client = server.accept ();
 
+                //데이터를 가져오고 보낼 스트림을 연결
+                InputStream input = client.getInputStream ();
+                OutputStream output = client.getOutputStream ();
+
+                //문자통신만 하기 때문에 그리고 속도 향상을 위해 보조스트림연결
+
+                BufferedReader br = new BufferedReader ( new InputStreamReader ( input ) );
+                PrintWriter pw = new PrintWriter ( output );
+
+                //메세지를 보내고 받는 기능 구현하기
+                while(true){
+                    Scanner sc = new Scanner ( System.in );
+
+                    do{
+                        messageIn = br.readLine();
+                        System.out.println ("Client Says "+messageIn );
+                    } while(!messageIn.equals("OVER")&&!messageIn.equals("OUT"));
+
+                    if(messageIn.equals("OUT")){
+                        port++;
+                        break;
+                    }
+
+                    do{
+                        System.out.println("Response: ");
+                        messageOut = sc.nextLine();
+                        pw.println(messageOut);
+                        pw.flush();
+                    }while(!messageOut.equals("OVER")&&!messageOut.equals("OUT"));
+
+                    if(messageOut.equals("OUT")){
+                        System.out.println("Connection is lost");
+                        pw.close();
+                        br.close();
+                        client.close();
+                        server.close();
+                        System.exit(0);
+                    }
+                }
             }
-
-
-        } catch (IOException ioe){
-            System.out.println ( ioe.toString () );
-        } catch (ClassNotFoundException cnfe){
-            System.out.println ( cnfe.toString () );
+        }catch (Exception e){
+            e.printStackTrace();
         }
 
     }
 
-
+    public static void main(String[] args){
+        Server walkieTalkie = new Server();
+    }
 }

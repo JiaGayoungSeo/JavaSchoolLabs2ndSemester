@@ -1,8 +1,6 @@
 package Lab09_Networking_Part1;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Scanner;
@@ -17,57 +15,72 @@ public class Client {
     //Declare IO pathways
     static ObjectOutputStream output;
     static ObjectInputStream input;
-    static String choice;
 
-    public static void main(String[] args){
+    public Client(String ip){
+        int port = 12345;
+
+        //서버와 데이터 입출력을 위한 스트림 생성
+        BufferedReader br = null;
+        PrintWriter pw = null;
+        //클라이언트용 소켓 객체 생성
+        Socket socket = null;
+
         try{
-            /*
-1.	The client will continue to send until either the string <OVER> or <OUT> is sent.
-2.	The server will continue to receive until either the string <OVER> or <OUT> is received
-3.	When the client sends the string <OVER> it will then continue to receive until it Receives <OVER> or <OUT> from the server.
-4.	When the server receives <OVER> it will continue to send until <OVER> or <OUT> is sent.
-5.	If the server sends <OVER> return to step 1
-6.	If the server sends <OUT> it terminates and the connection is lost
-7.	If the client sends <OUT> terminate the client.  The server should still be running and awaiting more connections.
- */
-            client = new Socket ( InetAddress.getByName ( "127.0.0.1"),77);
+            System.out.println ( InetAddress.getLocalHost ().getHostAddress () );
+            String serverIp = ip;
 
-            //1. Establish IO paths between client and server
-            ObjectOutputStream output = new ObjectOutputStream ( client.getOutputStream () );
-            output.flush ();
-            ObjectInputStream input = new ObjectInputStream ( client.getInputStream () );
+            //서버 연결 소켓
+            socket = new Socket ( serverIp,port );
+            //입출력 스트림 생성(데이터를 가져오고 보낼수 있도록)
+            InputStream input = socket.getInputStream ();
+            OutputStream output = socket.getOutputStream ();
+            //보조 스트림 붙이기(성능개선)
+            br = new BufferedReader ( new InputStreamReader ( input ) );
+            pw = new PrintWriter ( output );
+
+            //Scanner 생성
+            Scanner sc = new Scanner ( System.in );
 
             while(true){
-                System.out.println ( "Please type your message: " );
 
                 do{
-                    keyboardInput = new Scanner ( System.in );
-                    messageOut = keyboardInput.nextLine ();
-                }while(!messageOut.equals ( "Over" )&&!messageOut.equals ( "Out" ));{
-                    messageOut += keyboardInput.nextLine ();
-                }
-                output.writeObject ( messageOut );
-                output.flush ();
+                    System.out.print( "Message:" );
+                    messageOut = sc.nextLine ();
 
-                messageIn = (String)input.readObject ();
+                    //client가 입력한 메세지를 서버에 보냄
+                    pw.println (messageOut);
+                    //버퍼 비워주기
+                    pw.flush ();
+                }while(!messageOut.equals("OUT")&&!messageOut.equals("OVER"));
 
-                if(messageIn.equals ( "Over" )){
-                    continue;
-                }
-                else if(messageIn.equals ( "Out" )){
+                if(messageOut.equals ( "OUT" )){
                     break;
                 }
-                System.out.println ( "SERVER SAYS: "+messageIn );
-                messageOut = keyboardInput.nextLine ();
+
+                do{
+                    messageIn = br.readLine();
+                    System.out.println ( "Server says: "+messageIn );
+
+                }while(!messageIn.equals("OVER")&&!messageIn.equals("OUT"));
+
             }
 
-        } catch (IOException ioe){
-            System.out.println ( ioe.toString () );
-        } catch (ClassNotFoundException cnfe){
-            System.out.println ( cnfe.toString () );
+
+        } catch (IOException e){
+            e.printStackTrace ();
+        }finally {
+            try{
+                br.close ();
+                pw.close ();
+                socket.close ();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
 
     }
 
-
+    public static void main(String[] args){
+        Client walkieTalkie = new Client("10.52.32.13");
+    }
 }
