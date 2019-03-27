@@ -17,8 +17,10 @@ public class Server {
         int port = 12345;
 
         try {
+            ServerSocket server = new ServerSocket ( port );
             while(true){
-                ServerSocket server = new ServerSocket ( port );
+
+
                 System.out.println ( "Waiting for client to connect...." );
 
                 //server 소켓으로 들어오는 클라이언트 소켓을 받음
@@ -43,7 +45,6 @@ public class Server {
                     } while(!messageIn.equals("OVER")&&!messageIn.equals("OUT"));
                     //if message from server is "OUT", break the loop and change port number
                     if(messageIn.equals("OUT")){
-                        port++;
                         break;
                     }
                     //send client side messages until server sends "OVER" or "OUT"

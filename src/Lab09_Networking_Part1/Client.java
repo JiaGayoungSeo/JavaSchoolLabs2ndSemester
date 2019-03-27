@@ -17,8 +17,7 @@ public class Client {
     //static ObjectInputStream input;
 
     public Client(String ip){
-        int port = 12345;
-
+        int port =12345;
         //create streams to input and output data 서버와 데이터 입출력을 위한 스트림 생성
         BufferedReader br = null;
         PrintWriter pw = null;
@@ -27,9 +26,10 @@ public class Client {
 
         try{
             System.out.println ( InetAddress.getLocalHost ().getHostAddress () );
+
             String serverIp = ip;
 
-            //c서버 연결 소켓
+            //서버 연결 소켓
             socket = new Socket ( serverIp,port );
             //입출력 스트림 생성(데이터를 가져오고 보낼수 있도록)
             InputStream input = socket.getInputStream ();
@@ -44,7 +44,7 @@ public class Client {
             while(true){
 
                 do{
-                    System.out.print( "Message:" );
+                    System.out.print( "Type your message: " );
                     messageOut = sc.nextLine ();
 
                     //client가 입력한 메세지를 서버에 보냄
@@ -62,9 +62,7 @@ public class Client {
                     System.out.println ( "Server says: "+messageIn );
 
                 }while(!messageIn.equals("OVER")&&!messageIn.equals("OUT"));
-
             }
-
 
         } catch (IOException e){
             e.printStackTrace ();
@@ -81,6 +79,6 @@ public class Client {
     }
 
     public static void main(String[] args){
-        Client walkieTalkie = new Client("10.52.7.167");
+        Client walkieTalkie = new Client("10.52.30.36");
     }
 }
