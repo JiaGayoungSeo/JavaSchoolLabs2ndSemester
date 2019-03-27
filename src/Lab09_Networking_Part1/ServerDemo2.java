@@ -6,19 +6,13 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class ServerDemo2 {
+    static String messageIn ="";
+    static String messageOut ="";
+
     public static void main(String[] args) throws IOException {
 
-        int port = 12;
+        int port = 12345;
 
-                   /*
-1.	The client will continue to send until either the string <OVER> or <OUT> is sent.
-2.	The server will continue to receive until either the string <OVER> or <OUT> is received
-3.	When the client sends the string <OVER> it will then continue to receive until it Receives <OVER> or <OUT> from the server.
-4.	When the server receives <OVER> it will continue to send until <OVER> or <OUT> is sent.
-5.	If the server sends <OVER> return to step 1
-6.	If the server sends <OUT> it terminates and the connection is lost
-7.	If the client sends <OUT> terminate the client.  The server should still be running and awaiting more connections.
- */
 
         while(true){
             ServerSocket server = new ServerSocket ( port );
@@ -37,38 +31,29 @@ public class ServerDemo2 {
 
             //메세지를 보내고 받는 기능 구현하기
             while(true){
-                //클라이언트가 보낸 메세지를 받음
-                String message = br.readLine ();
-
                 Scanner sc = new Scanner ( System.in );
 
-                if(!message.equals ( "OVER" )&&!message.equals ( "OUT" )){
-                    System.out.println ( client.getInetAddress ()+" Says "+message );
+                do{
+                    messageIn = br.readLine();
+                    System.out.println ("Client Says "+messageIn );
+                } while(!messageIn.equals("OVER")&&!messageIn.equals("OUT"));
 
-                    String response = sc.nextLine ();
-                    pw.println (response);
-                    //버퍼 비워주기
-                    pw.flush ();
-                }
-                else if(message.equals ( "OVER" )){
-
-                    System.out.println ( "Send the client OVER or OVER" );
-                    String newMessage = sc.nextLine ();
-
-                    if(newMessage.equals ( "OUT" )){
-                        System.out.println ( "It terminates and the connection is lost" );
-                        System.exit ( 0 );
-                    }
-                    pw.println (newMessage);
-
-                }
-
-                if(message.equals ( "Out" )){
+                if(messageIn.equals("OUT")){
+                    port++;
                     break;
                 }
+
+                do{
+                    System.out.println("Response: ");
+                    messageOut = sc.nextLine();
+                    pw.println(messageOut);
+                    pw.flush();
+                }while(!messageOut.equals("OVER")&&!messageOut.equals("OUT"));
+
+                if(messageOut.equals("OUT")){
+                    System.exit(0);
+                }
             }
-            port++;
-            continue;
         }
     }
 }
