@@ -20,6 +20,7 @@ public class Server {
             while(true){
                 ServerSocket server = new ServerSocket ( port );
                 System.out.println ( "Waiting for client to connect...." );
+
                 //server 소켓으로 들어오는 클라이언트 소켓을 받음
                 Socket client = server.accept ();
 
@@ -32,20 +33,20 @@ public class Server {
                 BufferedReader br = new BufferedReader ( new InputStreamReader ( input ) );
                 PrintWriter pw = new PrintWriter ( output );
 
-                //메세지를 보내고 받는 기능 구현하기
+                //function to send and receive messages 메세지를 보내고 받는 기능 구현하기
                 while(true){
                     Scanner sc = new Scanner ( System.in );
-
+                    //receive messages from client until client sends "OVER" or "OUT"
                     do{
                         messageIn = br.readLine();
-                        System.out.println ("Client Says "+messageIn );
+                        System.out.println ("Client says "+messageIn );
                     } while(!messageIn.equals("OVER")&&!messageIn.equals("OUT"));
-
+                    //if message from server is "OUT", break the loop and change port number
                     if(messageIn.equals("OUT")){
                         port++;
                         break;
                     }
-
+                    //send client side messages until server sends "OVER" or "OUT"
                     do{
                         System.out.println("Response: ");
                         messageOut = sc.nextLine();

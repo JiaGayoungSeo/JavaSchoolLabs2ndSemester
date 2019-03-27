@@ -8,28 +8,28 @@ import java.util.Scanner;
 public class Client {
     static String messageIn;
     static String messageOut;
-    static Scanner keyboardInput;
+    //static Scanner keyboardInput;
 
     //Declare socket to maintain connection
-    static Socket client;
+    //static Socket client;
     //Declare IO pathways
-    static ObjectOutputStream output;
-    static ObjectInputStream input;
+    //static ObjectOutputStream output;
+    //static ObjectInputStream input;
 
     public Client(String ip){
         int port = 12345;
 
-        //서버와 데이터 입출력을 위한 스트림 생성
+        //create streams to input and output data 서버와 데이터 입출력을 위한 스트림 생성
         BufferedReader br = null;
         PrintWriter pw = null;
-        //클라이언트용 소켓 객체 생성
+        //create Socket object for client 클라이언트용 소켓 객체 생성
         Socket socket = null;
 
         try{
             System.out.println ( InetAddress.getLocalHost ().getHostAddress () );
             String serverIp = ip;
 
-            //서버 연결 소켓
+            //c서버 연결 소켓
             socket = new Socket ( serverIp,port );
             //입출력 스트림 생성(데이터를 가져오고 보낼수 있도록)
             InputStream input = socket.getInputStream ();
@@ -81,6 +81,6 @@ public class Client {
     }
 
     public static void main(String[] args){
-        Client walkieTalkie = new Client("10.52.32.13");
+        Client walkieTalkie = new Client("10.52.7.167");
     }
 }
