@@ -1,5 +1,5 @@
 package Lab10_Networking_Part2;
-import com.sun.corba.se.impl.io.OutputStreamHook;
+//import com.sun.corba.se.impl.io.OutputStreamHook;
 
 import javax.swing.*;
 import java.awt.*;
@@ -7,7 +7,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.*;
-
+import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.*;
 
 
 public class GUIChatClientInterface extends JFrame {
@@ -95,5 +97,8 @@ public class GUIChatClientInterface extends JFrame {
 
         GUIChatClientInterface chatter = new GUIChatClientInterface();
         chatter.connectToServer();
+        
     }
 }
+
+
