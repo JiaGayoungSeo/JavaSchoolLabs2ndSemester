@@ -97,7 +97,11 @@ public class GUIChatClientInterface extends JFrame {
 
         GUIChatClientInterface chatter = new GUIChatClientInterface();
         chatter.connectToServer();
-        
+        ChatListener chatListener = new ChatListener ( chatter.input, chatter.chatOutput );
+
+        ExecutorService listen = Executors.newFixedThreadPool(1);
+        listen.execute ( chatListener );
+
     }
 }
 
