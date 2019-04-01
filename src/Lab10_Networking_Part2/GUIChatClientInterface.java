@@ -1,8 +1,13 @@
 package Lab10_Networking_Part2;
+import com.sun.corba.se.impl.io.OutputStreamHook;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
+import java.net.*;
+
 
 
 public class GUIChatClientInterface extends JFrame {
@@ -10,6 +15,11 @@ public class GUIChatClientInterface extends JFrame {
     private JTextArea chatInput;
     private JTextArea chatOutput;
     private JButton chatSend;
+    private ObjectOutputStream output;
+    private ObjectInputStream input;
+    private Socket connection;
+
+
 
     public GUIChatClientInterface(){
         //set the title bar
@@ -27,7 +37,7 @@ public class GUIChatClientInterface extends JFrame {
         //add some controls
         chatOutput = new JTextArea();
         chatInput = new JTextArea(3,20);
-        chatSend = new JButton("Out");
+        chatSend = new JButton("Send");
 
 
         add(chatOutput, BorderLayout.CENTER);
@@ -51,29 +61,39 @@ public class GUIChatClientInterface extends JFrame {
 
                     private void sendData(JTextArea out){
 
-
                         try{
-
-                            System.out.println( out.getText() );
-
+                            output.writeObject(out.getText());
                         }
-
                         catch( Exception e){
-
                             System.out.println("Oops! : "+e.toString() );
-
                         }
-
                     }
-
-
                 }
         );
 
 
     }
 
+    public void connectToServer(){
+
+        try{
+            String targetIP =
+                    JOptionPane.showInputDialog("Enter Server IP Address");
+            connection = new Socket(targetIP,12345);
+            output = new ObjectOutputStream(connection.getOutputStream());
+            input = new ObjectInputStream(connection.getInputStream());
+            output.flush();
+        }
+        catch( Exception e){
+            System.out.println("Oops! : "+e.toString() );
+
+        }
+    }
+
+
     public static void main(String[] args){
+
         GUIChatClientInterface chatter = new GUIChatClientInterface();
+        chatter.connectToServer();
     }
 }
