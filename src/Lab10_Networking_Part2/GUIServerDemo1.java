@@ -1,5 +1,8 @@
 package Lab10_Networking_Part2;
 
+import com.sun.media.jfxmedia.Media;
+import com.sun.media.jfxmedia.MediaPlayer;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -8,6 +11,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -82,6 +86,7 @@ public class GUIServerDemo1 extends JFrame {
             output = new ObjectOutputStream(connection.getOutputStream());
             input = new ObjectInputStream(connection.getInputStream());
             output.flush();
+
         }
         catch( Exception e){
             System.out.println("Oops! : "+e.toString() );
@@ -94,7 +99,11 @@ public class GUIServerDemo1 extends JFrame {
         demo1.connectToClient(12345);
         ChatListener chatListener = new ChatListener(demo1.input,demo1.chatOutput);
 
-        ExecutorService listen = Executors.newFixedThreadPool(1);
+
+        ExecutorService listen = Executors.newFixedThreadPool(2);
+        MusicDemo3 introMusic = new MusicDemo3("D:\\COMP233 JAVA\\BarbieGirl.wav");
         listen.execute(chatListener);
+        listen.execute(introMusic);
+
     }
 }
