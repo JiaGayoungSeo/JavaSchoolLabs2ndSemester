@@ -7,7 +7,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class GUIServer {
+public class SampleServer {
     static String messageIn;
     static String messageOut;
     static Scanner keyboardInput;

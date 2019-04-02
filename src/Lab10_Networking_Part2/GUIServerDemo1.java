@@ -1,31 +1,29 @@
 package Lab10_Networking_Part2;
-//import com.sun.corba.se.impl.io.OutputStreamHook;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.*;
-import java.net.*;
-import java.util.Collection;
-import java.util.List;
-import java.util.concurrent.*;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-
-public class GUIChatClientInterface extends JFrame {
+public class GUIServerDemo1 extends JFrame {
 
     private JTextArea chatInput;
     private JTextArea chatOutput;
     private JButton chatSend;
     private ObjectOutputStream output;
     private ObjectInputStream input;
+    private ServerSocket server;
     private Socket connection;
 
-
-
-    public GUIChatClientInterface(){
+    public GUIServerDemo1(){
         //set the title bar
-        super("Client Chatter");
+        super("Server Chatter");
         //set dimensions
         setSize(500,500);
         //tell it to appear
@@ -39,6 +37,7 @@ public class GUIChatClientInterface extends JFrame {
         //add some controls
         chatOutput = new JTextArea();
         chatInput = new JTextArea(3,20);
+        chatInput.setLineWrap(true);
         chatSend = new JButton("Send");
 
 
@@ -66,7 +65,6 @@ public class GUIChatClientInterface extends JFrame {
                         try{
                             output.writeObject(out.getText());
                             out.setText("");
-
                         }
                         catch( Exception e){
                             System.out.println("Oops! : "+e.toString() );
@@ -76,12 +74,11 @@ public class GUIChatClientInterface extends JFrame {
         );
     }
 
-    public void connectToServer(){
+    public void connectToClient(int port){
 
         try{
-            String targetIP =
-                    JOptionPane.showInputDialog("Enter Server IP Address");
-            connection = new Socket(targetIP,12345);
+            server = new ServerSocket(port,100);
+            connection = server.accept();
             output = new ObjectOutputStream(connection.getOutputStream());
             input = new ObjectInputStream(connection.getInputStream());
             output.flush();
@@ -92,17 +89,12 @@ public class GUIChatClientInterface extends JFrame {
         }
     }
 
-
     public static void main(String[] args){
-
-        GUIChatClientInterface chatter = new GUIChatClientInterface();
-        chatter.connectToServer();
-        ChatListener chatListener = new ChatListener ( chatter.input, chatter.chatOutput );
+        GUIServerDemo1 demo1 = new GUIServerDemo1();
+        demo1.connectToClient(12345);
+        ChatListener chatListener = new ChatListener(demo1.input,demo1.chatOutput);
 
         ExecutorService listen = Executors.newFixedThreadPool(1);
-        listen.execute ( chatListener );
-
+        listen.execute(chatListener);
     }
 }
-
-
