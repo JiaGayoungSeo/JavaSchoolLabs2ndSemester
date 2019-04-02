@@ -5,11 +5,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.*;
-import java.net.*;
-import java.util.Collection;
-import java.util.List;
-import java.util.concurrent.*;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 public class GUIChatClientInterface extends JFrame {
@@ -31,20 +31,31 @@ public class GUIChatClientInterface extends JFrame {
         //tell it to appear
         setVisible(true);
 
+
         ////determines the layout
         BorderLayout layout = new BorderLayout();
         setLayout( layout );
 
+        //create a font object
+        Font font = new Font("Helvetica",Font.PLAIN,15);
 
         //add some controls
         chatOutput = new JTextArea();
         chatInput = new JTextArea(3,20);
         chatSend = new JButton("Send");
 
-
         add(chatOutput, BorderLayout.CENTER);
         add(chatInput, BorderLayout.SOUTH);
         add(chatSend, BorderLayout.SOUTH);
+
+        //set background color
+        chatInput.setBackground(new Color(208,236,231));
+        chatOutput.setBackground(new Color(249,231,159));
+
+        //set font
+        chatOutput.setFont(font);
+
+        chatOutput.append("Client side! Let's get it started!"+"\n");
 
         Panel chatInputContainer = new Panel();
 

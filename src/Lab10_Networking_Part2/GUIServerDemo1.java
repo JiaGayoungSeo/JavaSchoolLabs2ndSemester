@@ -1,8 +1,5 @@
 package Lab10_Networking_Part2;
 
-import com.sun.media.jfxmedia.Media;
-import com.sun.media.jfxmedia.MediaPlayer;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,7 +8,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -33,9 +29,13 @@ public class GUIServerDemo1 extends JFrame {
         //tell it to appear
         setVisible(true);
 
+
         ////determines the layout
         BorderLayout layout = new BorderLayout();
         setLayout( layout );
+
+        //create a font object
+        Font font = new Font("Helvetica",Font.PLAIN,15);
 
 
         //add some controls
@@ -48,6 +48,15 @@ public class GUIServerDemo1 extends JFrame {
         add(chatOutput, BorderLayout.CENTER);
         add(chatInput, BorderLayout.SOUTH);
         add(chatSend, BorderLayout.SOUTH);
+
+        //set background color
+        chatInput.setBackground(new Color(208,236,231));
+        chatOutput.setBackground(new Color(249,231,159));
+
+        //set font
+        chatOutput.setFont(font);
+
+        chatOutput.append("This is server side! Let's get it started!"+"\n");
 
         Panel chatInputContainer = new Panel();
 

@@ -10,7 +10,6 @@ public class MusicDemo3 extends Thread {
     public MusicDemo3(String filepath){
         try{
 
-            //File file = new File("C:\\Users\\seo8556\\Downloads\\bgm.wav");
             File file = new File(filepath);
 
             FileInputStream fis = new FileInputStream(file);
